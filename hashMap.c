@@ -48,23 +48,28 @@ void freeMap (struct hashMap * ht)
 
 			temp = ht->table[i];
 			ht->table[i] = ht->table[i]->next;
+			free(temp->key);
 			free(temp);
+			ht->count--;
 
 		}
 
 	}
 
 	free(ht->table);
+	ht->tableSize = 0;
 
 }
 
 void insertMap (struct hashMap * ht, KeyType k, ValueType v)
 {  /*write this*/
 
-	hashLink* newLink = (hashLink*)malloc(sizeof(hashLink));
+	hashLink* newLink;
 	int index = (int)(labs(stringHash2(k)) % ht->tableSize);
 
 	if(!containsKey(ht, k)) {
+
+		newLink = (hashLink*)malloc(sizeof(hashLink));
 
 		newLink->key = k;
 		newLink->value = v;
@@ -74,10 +79,10 @@ void insertMap (struct hashMap * ht, KeyType k, ValueType v)
 
 		ht->count++;
 		
-
 	} else {
 
 		*atMap(ht, k) = v;
+		free(k);
 
 	}
 
@@ -153,7 +158,9 @@ void removeKey (struct hashMap * ht, KeyType k)
 
 		if(stringHash2(curr->key) == hash) {
 			prev->next = curr->next;
+			free(curr->key);
 			free(curr);
+			ht->count--;
 			return;
 		}
 

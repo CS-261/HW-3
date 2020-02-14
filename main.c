@@ -24,29 +24,24 @@ int main (int argc, const char * argv[]) {
     hashMap ht;
     FILE* f;
     char* nextWord;
-    int i;
+    int i = 0;
     hashLink* curr;
 
     initMap(&ht, 20);
 
     f = fopen("input.txt", "r");
 
-    nextWord = getWord(f);
-    while(nextWord) {
-        if(containsKey(&ht, nextWord)) {
-            insertMap(&ht, nextWord, *atMap(&ht, nextWord) + 1);
-        }
+    while((nextWord = getWord(f))) {
+        if(containsKey(&ht, nextWord)) insertMap(&ht, nextWord, *atMap(&ht, nextWord) + 1);
         else insertMap(&ht, nextWord, 1);
-        nextWord = getWord(f);
     }
-
+    
     for(i = 0; i < ht.tableSize; i++) {
 
         curr = ht.table[i];
         while(curr) {
 
             printf("%s: %i\n", curr->key, curr->value);
-            free(curr->key);
             curr = curr->next;
 
         }
@@ -55,7 +50,6 @@ int main (int argc, const char * argv[]) {
 
     fclose(f);
 
-    free(nextWord);
     freeMap(&ht);
 
     return 0;
@@ -70,7 +64,7 @@ int isCharValid(char c) {
 
 char* getWord(FILE *file) {
 
-    char c, buffer[32], * word;
+    char c, buffer[32], * word = 0;
     int n = 0, i, flag = 0;
 
     c = fgetc(file);
@@ -92,7 +86,7 @@ char* getWord(FILE *file) {
 
     }
 
-    word = (char*)malloc(sizeof(char) * n + 1);
+    word = (char*)malloc(sizeof(char) * (n + 1));
     for(i = 0; i < n; i++) word[i] = buffer[i];
     word[n] = '\0';
 
