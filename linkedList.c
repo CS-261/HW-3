@@ -104,7 +104,19 @@ void addLinkedList (LinkedList *l, TYPE val)
 
 int containsLinkedList(LinkedList *l, TYPE val)
 {
-/* write this function */
+	/* write this function */
+
+	struct Link* curr = l->head;
+
+	while(curr) {
+
+		if(EQ(curr->val, val)) return 1;
+		curr = curr->next;
+
+	}
+
+	return 0;
+
 }
 
 void _removeLink(struct Link *prev, struct Link *cur)
@@ -130,6 +142,24 @@ void removeLinkedList (LinkedList *l, TYPE val)
 		}
 	else {	
            /* write this part of the function */
+
+		   prev = l->head;
+		   cur = l->head->next;
+
+		   while(cur) {
+
+				if(EQ(cur->val, val)) {
+
+					free(prev);
+					return;
+
+				}
+
+				prev = cur;
+				cur = cur->next;
+
+		   }
+
 	}
 		
 }
