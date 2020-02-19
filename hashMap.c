@@ -154,6 +154,14 @@ void removeKey (struct hashMap * ht, KeyType k)
 	
 	curr = ht->table[index];
 
+	if(stringHash2(curr->key) == hash) {
+		ht->table[index] = curr->next;
+		free(curr->key);
+		free(curr);
+		ht->count--;
+		return;
+	}
+
 	while(curr) {
 
 		if(stringHash2(curr->key) == hash) {
